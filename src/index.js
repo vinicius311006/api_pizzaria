@@ -5,6 +5,8 @@ const path = require('path'); //Importando
 const app = express();
 
 const router = express.Router(); //isso permite que agente crie diferentes URLs e endpoints pai o frontend possa fazer chamadas
+const db = require('./db')
+
 router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/pages/home.html'))
 })
