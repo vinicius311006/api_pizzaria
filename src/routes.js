@@ -7,14 +7,26 @@ router.get("/", (req, res) => {
 })
 
 const clienteController = require('./clienteController')
+const loginController = require('./loginController')
+const produtoController = require('./produtoController')
 
-router.get('/clientes', clienteController.listarClientes)
-router.get('/clientes/:cpf', clienteController.buscarCliente)
-
+router.get('/clientes', loginController.autenticarToken, clienteController.listarClientes)
+router.get('/clientes/:cpf', loginController.autenticarToken, clienteController.buscarCliente)
 router.post('/cliente', clienteController.adicionarCliente)
+router.patch('/cliente/:cpf', loginController.autenticarToken, clienteController.atualizarCliente)
+router.delete('/cliente/:cpf', loginController.autenticarToken, clienteController.deletarCliente)
+router.post('/login', loginController.loginCliente)
 
-router.patch('/cliente/:cpf', clienteController.atualizarCliente)
+//POST: Aceita criar algum objetivo do servidor.
+//PUT: Aceita substituir algum objeto do servidor.
+//PATCH: Aceita alterar parcialmente algum objeto do servidor.
+//DELETE: Informa por meio do URL o objeto a ser deletado.
 
-router.delete('/cliente/:cpf', clienteController.deletarCliente)
+router.get('/produto', produtoController.listarProduto)
+router.get('/produto/:id', produtoController.buscarProdutoId)
+router.get('/produto/nome/:nome_produto', produtoController.buscarProdutoNome)
+router.post('/produto', produtoController.adicionarProduto)
+router.patch('/produto', produtoController.atualizarProduto)
+router.delete('/produto/:id', produtoController.deletarProduto)
 
 module.exports = router
