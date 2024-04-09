@@ -25,7 +25,7 @@ exports.listarProduto = (req, res) => {
 
 exports.buscarProdutoNome = (req, res) => {
     const { nome_produto } = req.params
-    db.query('SELECT * FROM produto WHERE nome_produto LIKE ?', [`${nome_produto}`], (err, result) => {
+    db.query('SELECT * FROM produto WHERE nome_produto LIKE ?', [`${nome_produto}%`], (err, result) => {
         if (err) {
             console.error('Erro ao buscar Produto:', err);
             res.status(500), json({ error: 'Erro interno do servidor' })
@@ -34,7 +34,7 @@ exports.buscarProdutoNome = (req, res) => {
         if (result.length === 0) {
             res.status(404).json({ error: 'Produto não encontrado' })
         }
-        res.json(result[0])
+        res.json(result)
     })
 }
 
