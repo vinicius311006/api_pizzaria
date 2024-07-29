@@ -7,7 +7,7 @@ const pedidoSchema = joi.object({
     forma_pgto: joi.string().required(),
     qtde_itens: joi.string().required(),
     valor_total: joi.string().required(),
-    observacao: joi.string().required(),
+    observacao: joi.string(),
     id_cliente: joi.string().required(),
     id_entregador: joi.string().required(),
 })
@@ -56,8 +56,8 @@ exports.buscarPedidoIdCliente = (req, res) => {
 }
 
 exports.adicionarPedido = (req, res) => {
-    const { forma_pgto, qtde_itens, valor_total, observacao } = req.body
-    const { error } = pedidoSchema.validate({ forma_pgto, qtde_itens, valor_total, observacao })
+    const { forma_pgto, qtde_itens, valor_total, observacao, id_cliente, id_entregador } = req.body
+    const { error } = pedidoSchema.validate({ forma_pgto, qtde_itens, valor_total, observacao, id_cliente, id_entregador })
 
     if (error) {
         res.status(400).json({ error: 'Dados de pedido inválido' })
@@ -67,7 +67,9 @@ exports.adicionarPedido = (req, res) => {
         forma_pgto,
         qtde_itens,
         valor_total,
-        observacao
+        observacao,
+        id_cliente,
+        id_entregador
     }
     db.query('INSERT INTO pedido SET ?', novoPedido, (err, result) => {
         if (err) {
@@ -81,8 +83,8 @@ exports.adicionarPedido = (req, res) => {
 
 exports.atualizarPedido = (req, res) => {
     const { id_pedido } = req.params
-    const { forma_pgto, qtde_itens, valor_total, observacao } = req.body
-    const { error } = pedidoSchema.validate({ forma_pgto, qtde_itens, valor_total, observacao })
+    const { forma_pgto, qtde_itens, valor_total, observacao, id_cliente, id_entregador } = req.body
+    const { error } = pedidoSchema.validate({ forma_pgto, qtde_itens, valor_total, observacao, id_cliente, id_entregador })
 
     if (error) {
         res.status(400).json({ error: 'Dados do Pedido invalidos' })
@@ -93,7 +95,9 @@ exports.atualizarPedido = (req, res) => {
         forma_pgto,
         qtde_itens,
         valor_total,
-        observacao
+        observacao,
+        id_cliente,
+        id_entregador
     }
 
     db.query('UPDATE pedido SET ? WHERE id_pedido = ?', [pedidoAtualizado, id_pedido], (err, result) => {
